@@ -1,26 +1,29 @@
-const request = require("request");
-const cheerio = require("cheerio");
-const mongoose = require("fs");
+const puppeteer = require("puppeteer");
 
-// const URL = "https://www.flipkart.com/search?q=mobiles";
-const URL =
-	"https://www.google.com/search?client=safari&rls=en&q=current+stock+price+of+apple&ie=UTF-8&oe=UTF-8";
+(async () => {
+	const url =
+		"https://www.google.com/search?client=safari&rls=en&q=apple+stock+price&ie=UTF-8&oe=UTF-8";
+        // "https://harshalgajjar.com";
+        const browser = await puppeteer.launch({headless: true});
+	const page = await browser.newPage();
+	await page.setViewport({
+		width: 1920,
+		height: 1080,
+		deviceScaleFactor: 1,
+	});
+	await page.goto(url);
+	// await page.screenshot({ path: "screenshot.png" });
 
-request(URL, function (err, res, body) {
-	if (err) {
-		console.log(err, "error occurred while hitting URL");
-	} else {
-		console.log(body);
-		let $ = cheerio.load(body);
+    element = await page.waitForSelector("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.wGt0Bc > div.PZPZlf > span:nth-child(1) > span > span.IsqQVc.NprOob.wT3VGc", {timeout: 30000});
+    title = await page.evaluate(element => element.textContent, element);
 
-		$(
-			"#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.wGt0Bc > div.PZPZlf > span:nth-child(1) > span > span.IsqQVc.NprOob.wT3VGc"
-		).text();
+    console.log(title)
 
-		// $("._2kHMtA").each(function(index, elem){
-		//     // console.log(elem)
-		//     const data = $(this).find('._4rR01T').text();
-		//     console.log(data)
-		// })
-	}
-});
+    // await page.$('').then(elem=>
+    //     console.log(elem)
+    // )
+
+    // console.log(xpathcontent)
+
+	await browser.close();
+})();
