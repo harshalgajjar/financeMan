@@ -1,67 +1,36 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementAsync,
-  incrementIfOdd,
-  selectCount,
-} from './fetcherSlice';
-import styles from './Fetcher.module.css';
+  getContent
+} from "./fetcherSlice";
+import styles from "./Fetcher.module.css";
 
 export function Fetcher() {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
+	// const count = useSelector(selectCount);
+	const dispatch = useDispatch();
+	const [state, setState] = useState({ link: "", path: "" });
 
-  const incrementValue = Number(incrementAmount) || 0;
-
-  return (
-    <div>
-      <div className={styles.row}>
-        <button
-          className={styles.button}
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          -
-        </button>
-        <span className={styles.value}>{count}</span>
-        <button
-          className={styles.button}
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
-      </div>
-      <div className={styles.row}>
-        <input
-          className={styles.textbox}
-          aria-label="Set increment amount"
-          value={incrementAmount}
-          onChange={(e) => setIncrementAmount(e.target.value)}
-        />
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementByAmount(incrementValue))}
-        >
-          Add Amount
-        </button>
-        <button
-          className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(incrementValue))}
-        >
-          Add Async
-        </button>
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementIfOdd(incrementValue))}
-        >
-          Add If Odd
-        </button>
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<div className={styles.row}>
+				{state.link}
+				<br />
+				<input
+					onChange={(e) => {
+						setState({ ...state, link: e.target.value });
+					}}
+				></input>
+				<input
+					onChange={(e) => {
+						setState({ ...state, link: e.target.path });
+					}}
+				></input>
+				<button
+					className={styles.button}
+					aria-label=""
+					onClick={() => dispatch(getContent())}
+				>Fetch</button>
+			</div>
+		</div>
+	);
 }
